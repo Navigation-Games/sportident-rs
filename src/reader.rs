@@ -29,10 +29,10 @@ impl Reader {
     pub async fn connect<'a>(path: impl Into<std::borrow::Cow<'a, str>> + Send) -> Result<Self> {
         let mut port = tokio_serial::new(path, HIGH_SPEED_BAUD_RATE).open_native_async()?;
 
-        #[cfg(linux)]
+        #[cfg(target_os = "linux")]
         port.set_exclusive(true)?;
 
-        #[cfg(macos)]
+        #[cfg(target_os = "macos")]
         port.set_exclusive(false)?;
 
         // flush port io.
